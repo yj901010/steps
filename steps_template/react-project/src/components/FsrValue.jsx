@@ -14,6 +14,7 @@ const FsrValue = () => {
     const [angleZ, setAnglez] = useState();
     const [resultText, setResultText] = useState('');
     const [mpu, setMpu] = useState([]);
+    const [prevResultText, setPrevResultText] = useState('');
 
     useEffect(() => {
         // 소켓 이벤트 리스너 등록
@@ -22,6 +23,7 @@ const FsrValue = () => {
             const parsedData = parseBluetoothData(data);
             setHeatmapData(parsedData);
             updateResultText(data.split(',').map(Number)[16]);
+            updateFsrResult(data.split(',').map(Number).slice(0, 16));
 
             axios.post('user/insertAllData', { fsrArray:data.split(',').map(Number).slice(0, 16), mpu:data.split(',').map(Number).slice(17, 23), id: user.id })
           .then((res) => {
@@ -36,8 +38,51 @@ const FsrValue = () => {
         return () => {
             // 컴포넌트 언마운트 시 소켓 이벤트 리스너 제거
             socket.off('bluetoothData');
+
+            speechSynthesis.cancel();
         };
     }, []);
+
+    useEffect(() => {
+        // Web Speech API를 지원하는지 확인
+        if ('speechSynthesis' in window) {
+            // resultText가 변경되고, 이전 값과 다를 때 음성으로 읽어줌
+            if (resultText !== prevResultText) {
+                const utterance = new SpeechSynthesisUtterance(resultText);
+                speechSynthesis.speak(utterance);
+                // resultText가 변경되었으므로 이전 값을 업데이트
+                setPrevResultText(resultText);
+            }
+        } else {
+            console.error('Web Speech API를 지원하지 않는 브라우저입니다.');
+        }
+    }, [resultText, prevResultText]);
+
+    const updateFsrResult = (data) => {
+        // 각 범위에 대한 평균 계산
+        const avgRange1 = calculateAverage(data, 2, 5);
+        const avgRange2 = calculateAverage(data, 5, 8);
+        const avgRange3 = calculateAverage(data, 8, 11);
+        const avgRange4 = calculateAverage(data, 11, 14);
+
+        // 평균 비교를 통한 발의 아치 평가
+        const avgThreshold = 0.5; // 필요에 따라 이 임계값을 조정하세요
+        if (
+            Math.abs(avgRange1 - avgRange2) < avgThreshold &&
+            Math.abs(avgRange2 - avgRange3) < avgThreshold &&
+            Math.abs(avgRange3 - avgRange4) < avgThreshold
+        ) {
+            setResultText('평발');
+        } else {
+            setResultText('정상');
+        }
+    }
+
+    const calculateAverage = (array, startIdx, endIdx) => {
+        const range = array.slice(startIdx, endIdx + 1);
+        const sum = range.reduce((acc, value) => acc + value, 0);
+        return sum / range.length;
+    };
 
     const updateResultText = (data) => {
       if (data <= -25) {

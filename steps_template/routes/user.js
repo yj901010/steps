@@ -263,7 +263,6 @@ router.post('/video', (req,res)=>{
 
 router.post('/insertAllData', async (req, res) => {
   try {
-    console.log('데이터 저장 시도 완료', req.body);
     const id = req.body.id;
     const [AcX, AcY, AcZ, GyX, GyY, GyZ] = req.body.mpu;
     const created_ad = new Date();

@@ -65,38 +65,7 @@ const HeatMap = () => {
       <div>
         
       <div className="heatmap-container" style={{ backgroundImage: 'url("../free-icon-soles-3066981.png")', backgroundSize: '15% 100%', backgroundRepeat: 'no-repeat'  }}>
-              {/* <table style={{ border: '1px solid black' }}>
-                <tbody>
-                <tr>
-                <td>{fsrArray[0]}</td>
-                <td>{fsrArray[1]}</td>
-                </tr>
-              <tr>
-                <td>{fsrArray[2]}</td>
-                <td>{fsrArray[3]}</td>
-                <td>{fsrArray[4]}</td>
-                </tr>
-              <tr>
-              <td>{fsrArray[5]}</td>
-                <td>{fsrArray[6]}</td>
-                <td>{fsrArray[7]}</td>
-              </tr>
-              <tr>
-              <td>{fsrArray[8]}</td>
-                <td>{fsrArray[9]}</td>
-                <td>{fsrArray[10]}</td>
-                </tr>
-                <tr>
-                <td>{fsrArray[11]}</td>
-                <td>{fsrArray[12]}</td>
-                <td>{fsrArray[13]}</td>
-                </tr>
-                <tr>
-                <td>{fsrArray[14]}</td>
-                <td>{fsrArray[15]}</td>
-                </tr>
-                </tbody>
-              </table> */}
+
             {heatmapData.map((row, rowIndex) => (
               <div key={rowIndex} className="heatmap-row" style={{ display: 'flex', width: '250px' }}>
                     {row.map((value, colIndex) => (
@@ -107,43 +76,7 @@ const HeatMap = () => {
                 </div>
             ))}
             </div>
-            {/* <div style={{  textAlign:'center'  }}>
-              <button>백아연</button>
-            </div>
-            <div>
-            <Table bordered striped>
-                <tbody>
-              <tr>
-                <td>{fsrArray[0]}</td>
-                <td>{fsrArray[1]}</td>
-              </tr>
-              <tr>
-                <td>{fsrArray[2]}</td>
-                <td>{fsrArray[3]}</td>
-                <td>{fsrArray[4]}</td>
-              </tr>
-              <tr>
-                <td>{fsrArray[5]}</td>
-                <td>{fsrArray[6]}</td>
-                <td>{fsrArray[7]}</td>
-              </tr>
-              <tr>
-                <td>{fsrArray[8]}</td>
-                <td>{fsrArray[9]}</td>
-                <td>{fsrArray[10]}</td>
-              </tr>
-              <tr>
-                <td>{fsrArray[11]}</td>
-                <td>{fsrArray[12]}</td>
-                <td>{fsrArray[13]}</td>
-              </tr>
-              <tr>
-                <td>{fsrArray[14]}</td>
-                <td>{fsrArray[15]}</td>
-              </tr>
-            </tbody>
-            </Table>
-        </div> */}
+
       </div>
     );
 };
